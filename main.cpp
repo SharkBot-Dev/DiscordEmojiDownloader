@@ -241,6 +241,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 }
 
 int WINAPI WinMain(HINSTANCE hCurInst, HINSTANCE hPrevInst, LPSTR lpsCmdLine, int nCmdShow) {
+    FreeConsole();
+
 	HWND hWnd;
 
 	if (!RegisterApp("EmojiDownloader", WndProc)) return FALSE;
