@@ -1,0 +1,1 @@
+g++ main.cpp -o main.exe -IC:/vcpkg/installed/x64-windows/include -LC:/vcpkg/installed/x64-windows/lib -lcurl -lgdi32
