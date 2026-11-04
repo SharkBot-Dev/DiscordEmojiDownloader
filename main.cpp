@@ -158,7 +158,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 TEXT("BUTTON"),              // クラス名（ボタンコントロール）
                 TEXT("Download!"),       // ウィンドウ名（ボタンのテキスト）
                 WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, // ウィンドウスタイル（★WS_CHILDが必要）
-                10, 200, 100, 30,        // 位置 (x, y) と サイズ (幅, 高さ)
+                10, 190, 100, 30,        // 位置 (x, y) と サイズ (幅, 高さ)
                 hWnd,                   // 親ウィンドウのハンドル
                 (HMENU)2,
                 GetModuleHandleA(NULL),              // インスタンスハンドル
@@ -196,6 +196,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
                     const std::string_view emojiTextView(emojiText);
                     size_t lineStart = 0;
+                    int downloadOKEmojis = 0;
                     while (lineStart <= emojiTextView.size()) {
                         const size_t lineEnd = emojiTextView.find('\n', lineStart);
                         const size_t lineLength = lineEnd == std::string_view::npos
@@ -207,12 +208,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
                         std::string emoji_url = getEmojiUrl(emoji).value_or("");
                         if (emoji_url.empty()) {
-                            MessageBox(
-                                NULL, 
-                                TEXT("Emoji not found."), 
-                                TEXT("Error"), 
-                                MB_ICONERROR | MB_ICONINFORMATION
-                            );
                             break;
                         }
 
@@ -221,6 +216,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         if (lineEnd == std::string_view::npos)
                             break;
                         lineStart = lineEnd + 1;
+                        downloadOKEmojis = downloadOKEmojis + 1;
+                    }
+
+                    if (downloadEmoji == 0) {
+                        MessageBox(
+                            NULL, 
+                            TEXT("Emoji not found."), 
+                            TEXT("Error"), 
+                            MB_ICONERROR | MB_ICONINFORMATION
+                        );
+                        break;
                     }
 
                     MessageBox(
