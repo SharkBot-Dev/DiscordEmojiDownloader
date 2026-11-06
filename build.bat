@@ -1,1 +1,1 @@
-g++ main.cpp -o main.exe -IC:/vcpkg/installed/x64-windows/include -LC:/vcpkg/installed/x64-windows/lib -lcurl -lgdi32
+g++ -std=c++17 -O2 -Wall -Wextra main.cpp -o main.exe -IC:/vcpkg/installed/x64-windows/include -LC:/vcpkg/installed/x64-windows/lib -lcurl -lcomctl32 -lgdi32 -ldwmapi -lshell32 -lole32 -Wl,-subsystem,windows
