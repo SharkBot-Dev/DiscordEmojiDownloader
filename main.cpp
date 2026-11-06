@@ -189,28 +189,11 @@ void startDownloads() {
     GetWindowTextA(g_input, text.data(), length + 1);
     text.resize(length);
     std::vector<Job> jobs;
-    size_t start = 0;
-    while (start <= text.size()) {
-        size_t end = text.find('\n', start);
-        if (end == std::string::npos) end = text.size();
-        std::string line = text.substr(start, end - start);
-        if (!line.empty() && line.back() == '\r') line.pop_back();
-        if (!line.empty()) {
-            auto job = parseEmoji(line);
-            if (!job) {
-                MessageBoxA(
-                    g_window,
-                    ("Invalid emoji code:\n" + line).c_str(),
-                    "Check input",
-                    MB_OK | MB_ICONWARNING
-                );
-                return;
-            }
-
+    static const std::regex emojiPattern(R"(<(a?):[a-zA-Z0-9_]+:([0-9]+)>)");
+    for (std::sregex_iterator it(text.begin(), text.end(), emojiPattern), end; it != end; ++it) {
+        if (auto job = parseEmoji(it->str())) {
             jobs.push_back(*job);
         }
-        if (end == text.size()) break;
-        start = end + 1;
     }
     if (jobs.empty()) {
         MessageBoxA(
